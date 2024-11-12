@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+
+    <!--import  script& style  -->
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="./node_modules/axios/dist/axios.min.js"></script>
+
+    <style>
+        body{
+            background:#42317c;
+        }
+        .card{
+            margin-top: 30px;
+            
+        }
+        #add-btn{
+          position: fixed;
+          bottom: 5%;
+          right: 7%;
+          height: 70px;
+          width: 70px;
+          font-size: 50px;
+          color: rgb(10, 10, 10);
+          /* line-height: 0; */
+          border-radius: 100px;
+          text-align: center;
+          cursor: pointer;
+          box-shadow: 0px 10px 10px rgba(0, 0,0, 0.3);
+        }
+
+
+
+
+        /* =============LOADER STYLE======= */
+        .lds-hourglass {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-hourglass:after {
+  content: " ";
+  display: block;
+  border-radius: 50%;
+  width: 0;
+  height: 0;
+  margin: 8px;
+  box-sizing: border-box;
+  border: 32px solid#666;
+  border-color: #f0e7e7 transparent #020e2400 transparent;
+  /* background: rgba(0, 0,0, 0.3); */
+  animation: lds-hourglass 1.2s infinite;
+}
+@keyframes lds-hourglass {
+  0% {
+    transform: rotate(0);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  50% {
+    transform: rotate(900deg);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  100% {
+    transform: rotate(1800deg);
+  }
+}
+
+        /*///////////// =============LOADER STYLE======= */
+
+    </style>
+</head>
+<body>
+  <!-- =======LOADER======== -->
+  <div id="loader" style="background: rgb(182, 181, 181); position: fixed; top: 0px; bottom: 0px; left: 0px; right: 0px; margin: auto auto; display: flex; justify-content: center; align-items: center; z-index: 9999; width: 100px; height: 100px; border-radius: 20px;">
+  <div class="lds-hourglass">
+
+  </div>
+</div>
+
+  <!-- ////////=======LOADER========///////// -->
+
+
+
+
+  <!--modals============== -->
+
+  <!--login modals============== -->
+  <div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">login</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">username</label>
+              <input type="text" class="form-control" id="username-input" value="magyver69">
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">password</label>
+              <input type="password" class="form-control" id="password-input" value="12345678">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="loginbtnclicked()">login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ///login modals============== //////-->
+
+   <!--register modals============== -->
+   <div class="modal fade" id="register-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">register A new user</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">profile image</label>
+              <input type="file" class="form-control" id="register-image-input" value="magyver69">
+            </div>
+
+
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">name</label>
+              <input type="text" class="form-control" id="register-name-input" value="magyver69">
+            </div>
+
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">username</label>
+              <input type="text" class="form-control" id="register-username-input" value="magyver69">
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">password</label>
+              <input type="password" class="form-control" id="register-password-input" value="12345678">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="registerBtnClicked()">register</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ///register modals============== //////-->
+
+
+    <!--create post modals============== -->
+    <div class="modal fade" id="create-post-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="post-modal-title">create A new post</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">title</label>
+                <input type="text" class="form-control" id="post-title-input" value="">
+
+
+                <input type="hidden" id="post-id-input" value="">
+              </div>
+
+              <div class="mb-3">
+                <textarea name="" id="post-body-input" style="width: 100%; height: 100px; border-color: gray; border-radius: 10px;">
+              
+                </textarea>
+              </div>
+
+              <div class="mb-3">
+                  <label for="recipient-name" class="col-form-label">image</label>
+                  <input type="file" class="form-control" id="post-image-input">
+              </div>
+
+
+
+
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="post-modal-submit-btn" type="button" class="btn btn-primary" onclick="createNewPostClicked()">create</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ///create post  modals////============== //////-->
+
+  <!--modals/////////============== -->
+
+    <!--delete post modals============== -->
+    <div class="modal fade" id="delete-post-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="post-modal-title">are you sure you want delete your post 
+            <span id="delete-post-title"></span> 
+            </h1>
+
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+
+            <input type="hidden" id="delete-post-id-input" value="">
+          </div>
+         
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="post-modal-submit-btn" type="button" class="btn btn-danger" onclick="confirmPostDelete()">yes Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ///delete post  modals////============== //////-->
+
+
+
+
+  <!-- ====== Add post btn -->
+  <div class="bg-primary" id="add-btn" onclick="addBtnClicked()">
+    +
+  </div>
+
+
+
+
+
+
+  <!-- ==========ALERTS=========== -->
+  <div id="success-alert" class="show fade"  style="position: fixed; z-index: 999999; width: 40%; bottom: 0%; right: 0%;"></div>
+
+
+
+
+
+    <!-- nav bar cont -->
+    <div class="container">
+
+        <div class="d-flex justify-content-center">
+           <div class="col-9 ">
+           <nav class="navbar navbar-expand-lg bg-light shadow rounded pt-3">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="home.html">LOL</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="home.html">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" style="cursor: pointer;" onclick="profileClicked()">profile</a>
+                  </li>
+                </ul>
+
+                <!--non loggedin -->
+                <div class="d-flex  w-100 justify-content-end" id="logged-in-div">
+                <button id="login-btn" type="button" data-bs-toggle="modal" data-bs-target="#login-modal" class="btn btn-outline-success mx-2">login</button>
+                <button id="register-btn" type="button" data-bs-toggle="modal" data-bs-target="#register-modal" class="btn btn-outline-success">register</button>
+                </div>
+                <!-- ///non loggedin/// -->
+
+                <!-- loggedin -->
+
+                <div class="d-flex  w-100 justify-content-end align-items-center " id="logout-div">
+                  <img id="nav-user-image" class="rounded-circle" style="width: 40px; height: 40px;" src="./profile-pics/1.jpg" alt="">
+
+                  <b id="nav-username">
+                    @magyver69
+                  </b>
+                  <button onclick="logout()" id="logout-btn" type="button" data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-outline-danger mx-2">logout</button>
+                  
+                  </div>
+
+                <!-- ////loggedin //////-->
+              </div>
+            </div>
+           </nav>
+        </div>
+      </div>
+  </div>
+    <!-- nav bar cont // -->
+
+
+
+  <!-- main content  -->
+  <div class="container " style="height: 1000px;">
+
+    <!-- posts -->
+    <div class="d-flex justify-content-center mt-5">
+        <div class="col-9 ">
+
+      <div id="posts">
+
+        <!-- post -->
+        <div class="card shadow">
+            <div class="card-header">
+              <img class="rounded-circle border border-1" src="./profile-pics/1.jpg" alt="" style="width: 40px; height: 40px;" >
+              <b>@darklord</b>
+            </div>
+            <div class="card-body">
+             <img class=" w-100"  src=" ./profile-pics/arthur.jpeg" alt="">
+
+             <h6 style="color:rgb(97, 96, 96)"> 
+                2 min ago
+             </h6>
+             <h5>
+                hello
+             </h5>
+
+             <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam voluptatum, minus laborum eum dignissimos placeat itaque delectus. Amet sed consequuntur natus magnam eaque, adipisci cum! Amet facilis eius mollitia illum.
+             </p>
+
+             <hr>
+             <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+                  </svg>
+                <span>
+                    (3) comments
+                </span>
+             </div>
+
+            </div>
+          </div>
+        <!-- // post //-->
+
+           <!-- post -->
+           <div class="card shadow">
+            <div class="card-header">
+              <img class="rounded-circle border border-1" src="./profile-pics/1.jpg" alt="" style="width: 40px; height: 40px;" >
+              <b>@darklord</b>
+            </div>
+            <div class="card-body">
+             <img class=" w-100"  src=" ./profile-pics/arthur.jpeg" alt="">
+             <h6 style="color:rgb(97, 96, 96)"> 
+                2 min ago
+             </h6>
+             <h5>
+                hello
+             </h5>
+
+             <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam voluptatum, minus laborum eum dignissimos placeat itaque delectus. Amet sed consequuntur natus magnam eaque, adipisci cum! Amet facilis eius mollitia illum.
+             </p>
+
+             <hr>
+             <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+                  </svg>
+                <span>
+                    (3) comments
+                </span>
+             </div>
+
+            </div>
+          </div>
+        <!-- // post //-->
+        
+           <!-- post -->
+           <div class="card shadow">
+            <div class="card-header">
+              <img class="rounded-circle border border-1" src="./profile-pics/1.jpg" alt="" style="width: 40px; height: 40px;" >
+              <b>@darklord</b>
+            </div>
+            <div class="card-body">
+             <img class=" w-100"  src=" ./profile-pics/arthur.jpeg" alt="">
+
+             <h6 style="color:rgb(97, 96, 96)"> 
+                2 min ago
+             </h6>
+             <h5>
+                hello
+             </h5>
+
+             <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam voluptatum, minus laborum eum dignissimos placeat itaque delectus. Amet sed consequuntur natus magnam eaque, adipisci cum! Amet facilis eius mollitia illum.
+             </p>
+
+             <hr>
+             <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+                  </svg>
+                <span>
+                    (3) comments
+                </span>
+             </div>
+
+            </div>
+          </div>
+        <!-- // post //-->
+
+           <!-- post -->
+           <div class="card shadow">
+            <div class="card-header">
+              <img class="rounded-circle border border-1" src="./profile-pics/1.jpg" alt="" style="width: 40px; height: 40px;" >
+              <b>@darklord</b>
+            </div>
+            <div class="card-body">
+             <img class=" w-100"  src=" ./profile-pics/arthur.jpeg" alt="">
+
+             <h6 style="color:rgb(97, 96, 96)"> 
+                2 min ago
+             </h6>
+             <h5>
+                hello
+             </h5>
+
+             <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam voluptatum, minus laborum eum dignissimos placeat itaque delectus. Amet sed consequuntur natus magnam eaque, adipisci cum! Amet facilis eius mollitia illum.
+             </p>
+
+             <hr>
+             <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+                  </svg>
+                <span>
+                    (3) comments
+                </span>
+             </div>
+
+            </div>
+          </div>
+        <!-- // post //-->
+           <!-- post -->
+           <div class="card shadow ">
+            <div class="card-header">
+              <img class="rounded-circle border border-1" src="./profile-pics/1.jpg" alt="" style="width: 40px; height: 40px;" >
+              <b>@darklord</b>
+            </div>
+            <div class="card-body">
+             <img class=" w-100"  src=" ./profile-pics/arthur.jpeg" alt="">
+
+             <h6 style="color:rgb(97, 96, 96)"> 
+                2 min ago
+             </h6>
+             <h5>
+                hello
+             </h5>
+
+             <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam voluptatum, minus laborum eum dignissimos placeat itaque delectus. Amet sed consequuntur natus magnam eaque, adipisci cum! Amet facilis eius mollitia illum.
+             </p>
+
+             <hr>
+             <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+                  </svg>
+                <span>
+                    (3) comments
+                </span>
+             </div>
+
+            </div>
+          </div>
+        <!-- // post //-->
+
+             <!-- post -->
+             <div class="card shadow ">
+              <div class="card-header">
+                <img class="rounded-circle border border-1" src="./profile-pics/1.jpg" alt="" style="width: 40px; height: 40px;" >
+                <b>@darklord</b>
+              </div>
+              <div class="card-body">
+               <img class=" w-100"  src=" ./profile-pics/arthur.jpeg" alt="">
+  
+               <h6 style="color:rgb(97, 96, 96)"> 
+                  2 min ago
+               </h6>
+               <h5>
+                  hello
+               </h5>
+  
+               <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam voluptatum, minus laborum eum dignissimos placeat itaque delectus. Amet sed consequuntur natus magnam eaque, adipisci cum! Amet facilis eius mollitia illum.
+               </p>
+  
+               <hr>
+               <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                      <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+                    </svg>
+                  <span>
+                      (3) comments
+                  </span>
+               </div>
+  
+              </div>
+            </div>
+          <!-- // post //-->
+
+               <!-- post -->
+               <div class="card shadow ">
+                <div class="card-header">
+                  <img class="rounded-circle border border-1" src="./profile-pics/1.jpg" alt="" style="width: 40px; height: 40px;" >
+                  <b>@darklord</b>
+                </div>
+                <div class="card-body">
+                 <img class=" w-100"  src=" ./profile-pics/arthur.jpeg" alt="">
+    
+                 <h6 style="color:rgb(97, 96, 96)"> 
+                    2 min ago
+                 </h6>
+                 <h5>
+                    hello
+                 </h5>
+    
+                 <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam voluptatum, minus laborum eum dignissimos placeat itaque delectus. Amet sed consequuntur natus magnam eaque, adipisci cum! Amet facilis eius mollitia illum.
+                 </p>
+    
+                 <hr>
+                 <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                        <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+                      </svg>
+                    <span>
+                        (3) comments
+                    </span>
+                 </div>
+    
+                </div>
+              </div>
+            <!-- // post //-->
+
+                 <!-- post -->
+           <div class="card shadow my">
+            <div class="card-header">
+              <img class="rounded-circle border border-1" src="./profile-pics/1.jpg" alt="" style="width: 40px; height: 40px;" >
+              <b>@darklord</b>
+            </div>
+            <div class="card-body">
+             <img class=" w-100"  src=" ./profile-pics/arthur.jpeg" alt="">
+
+             <h6 style="color:rgb(97, 96, 96)"> 
+                2 min ago
+             </h6>
+             <h5>
+                hello
+             </h5>
+
+             <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam voluptatum, minus laborum eum dignissimos placeat itaque delectus. Amet sed consequuntur natus magnam eaque, adipisci cum! Amet facilis eius mollitia illum.
+             </p>
+
+             <hr>
+             <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+                  </svg>
+                <span>
+                    (3) comments
+                </span>
+             </div>
+
+            </div>
+          </div>
+        <!-- // post //-->
+       </div>
+
+    </div>
+
+  </div>
+    <!-- // posts // -->
+
+  </div>
+  <!-- main content //  -->
+    
+  
+</body>
+<script src="./MainLogic.js"></script>
+<script src="./homeScripts.js"></script>
+</html>
